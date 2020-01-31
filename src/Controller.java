@@ -19,22 +19,37 @@ public class Controller {
      * Set cooling = false if OFF */
     private boolean cooling;
 
+    private Display display;
+
     //--------------------------CONTROL FUNCTIONS------------------------------------
     /**
      * Constructor function for the Controller class.
      * Sets the default temperature setpoint to 22 degrees and temperature setpoint
      * deadband to 2 degrees.
      * Initialises all input temperatures to 0 degrees.
+     * cooling is initially set to false (OFF)
      */
     public Controller() {
         //setting up variables
-        this.temperatureSetpoint = 22.0;
-        this.deadband = 2.0;
-        this.cooling = false;
+        temperatureSetpoint = 22.0;
+        deadband = 2.0;
+        cooling = false;
 
         //setup input temperatures, initialise values to 0
-        this.inputTemperatures = new double[8];
+        inputTemperatures = new double[8];
         Arrays.fill(inputTemperatures,0);
+    }
+
+    public void connect(Display disp){
+        display = disp;
+    }
+
+    //TODO: maybe a new output array is needed using booleans or ints, if lower than setpoint then set to false
+    //TODO: then the function will return the product of the boolean output array and then temperature array
+    /** */
+    public void displayData(){
+        //this function will be run at regular intervals by the main function
+
     }
 
 
@@ -67,5 +82,9 @@ public class Controller {
      * @param index is an integer value which dictates which input is being changed */
     public void setInputTemperatures(double newTemp, int index){
         this.inputTemperatures[index] = newTemp;
+    }
+
+    public String getTemperature(int index) {
+        return String.valueOf(inputTemperatures[index]);
     }
 }
