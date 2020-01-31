@@ -8,66 +8,59 @@ import java.awt.*;
 public class Display {
     private Controller controller;
     private JFrame window;
-
-    private JTextField temperatureSetPoint;
-    private JTextField deadband;
-    private JTextField temperatureInputs[];
+    /** Index 0 and 1 and temperatureSetpoint and deadband fields respectively
+     *  indices 2 to 9 are temperature inputs */
+    private JTextField[] inputs;
 
     /** */
     public Display(){
         //setting up the window
         GridLayout windowLayout = new GridLayout(2,4);
         window = new JFrame();
-        window.setLayout(windowLayout);
+        window.setSize(1920,1080);
+        window.setLayout(null);
 
         //initialising the textfields
-        temperatureInputs = new JTextField[8];
-        temperatureSetPoint = new JTextField();
-        deadband = new JTextField();
+        inputs = new JTextField[10];
+        for(int i = 0; i < 10; i++ ){
+            inputs[i] = new JTextField();
+            inputs[i].setBounds(100,100 + i*20,100,20);
+            window.add(inputs[i]);
+        }
 
-        //adding textfields to window
-        window.add(temperatureSetPoint);
-        window.add(deadband);
+        window.setVisible(true);
     }
 
     public void init(){
         //setting initial values in textfields
-        temperatureSetPoint.setText(String.valueOf(controller.getTemperatureSetpoint()));
-        deadband.setText(String.valueOf(controller.getDeadBand()));
-        for(int i = 0; i < 8; i++ ){
-            temperatureInputs[i].setText(String.valueOf(controller.getTemperature(i)));
+        for(int i = 0; i < 10; i++ ){
+            inputs[i].setText(String.valueOf(controller.getInput(i)));
         }
     }
 
-    public void initTemperatureInputs(int index){
-        temperatureInputs[index].getDocument().addDocumentListener(new DocumentListener() {
+    public void initInputs(int index){
+        inputs[index].getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                if( checkForCharacters() ) {
-                    controller.setInputTemperatures(Double.parseDouble(temperatureInputs[index].getText()), index);
-                    controller.displayData();
-                }else{
-                    temperatureInputs[index].setText(controller.getTemperature(index));
-                }
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-                temperatureInputs[index].setText(controller.getTemperature(index));
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
                 if( checkForCharacters() ) {
-                    controller.setInputTemperatures(Double.parseDouble(temperatureInputs[index].getText()), index);
-                    controller.displayData();
+                    controller.setInput(Double.parseDouble(inputs[index].getText()), index);
+                    controller.Update();
                 }else{
-                    temperatureInputs[index].setText(controller.getTemperature(index));
+                    inputs[index].setText(controller.getInput(index));
                 }
             }
 
+            //returns true if no characters are found and false if a character other than digits and '.' is found
             public boolean checkForCharacters(){
-                String text = temperatureInputs[index].getText();
+                String text = inputs[index].getText();
                 char ctext[] = text.toCharArray();
                 for( int i = 0; i < text.length(); i++ ){
                     if(Character.isDigit(ctext[i]) != true || ctext[i] != '.'){
@@ -87,6 +80,6 @@ public class Display {
     }
 
     public void displayTemperatureInputs(int index, double value){
-        temperatureInputs[index].setText(String.valueOf(value));
+        inputs[index].setText(String.valueOf(value));
     }
 }

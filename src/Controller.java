@@ -3,17 +3,9 @@ import java.util.Arrays;
 public class Controller {
 
     //-------------------------CLASS VARIABLES---------------------------------------
-    /**
-     * Temperature setpoint, set to 22 degrees by default by the constructor
-     */
-    private double temperatureSetpoint;
-    /** Temperature setpoint deadband, set to 2 degrees by the constructor class
-     *  if an input temperature is lower than (setpoint - deadband) the output
-     *  will be turned off */
-    private double deadband;
-    /** Array used to store all 8 of the input temperatures, all 8 values are initially
-     * set to 0 by the constructor function */
-    private double inputTemperatures[];
+    /** indices 0 and 1 are used for the temperature setpoint and deadband values respectively,
+     * indices 2 to 9 are used for input temperatures */
+    private double inputs[];
     /** Used for the cooling output, initially set to false by the constructor function.
      * Set cooling = true if the desired output value is ON
      * Set cooling = false if OFF */
@@ -31,60 +23,38 @@ public class Controller {
      */
     public Controller() {
         //setting up variables
-        temperatureSetpoint = 22.0;
-        deadband = 2.0;
+//        temperatureSetpoint = 22.0;
+//        deadband = 2.0;
         cooling = false;
 
         //setup input temperatures, initialise values to 0
-        inputTemperatures = new double[8];
-        Arrays.fill(inputTemperatures,0);
+        inputs = new double[10];
+        inputs[0] = 22.0;
+        inputs[1] = 2.0;
+        Arrays.fill(inputs,2,9,0);
     }
 
     public void connect(Display disp){
         display = disp;
     }
 
-    //TODO: maybe a new output array is needed using booleans or ints, if lower than setpoint then set to false
-    //TODO: then the function will return the product of the boolean output array and then temperature array
     /** */
-    public void displayData(){
+    public void Update(){
         //this function will be run at regular intervals by the main function
+
 
     }
 
 
     //-------------------------------GET/SET FUNCTIONS---------------------------------
-    /** */
-    public double getTemperatureSetpoint(){
-        return temperatureSetpoint;
-    }
-
-    /** Gets the deadband temperature below which outputs will be turned off
-     * @return temperatureSetpoint - deadband */
-    public double getDeadBand(){
-        return temperatureSetpoint - deadband;
-    }
-
-    /** Sets a new temperature setpoint, overwriting the previous value
-     * @param newSetpoint This should be a double value representing the
-     *                    new temperature setpoint. */
-    public void setTemperatureSetpoint(double newSetpoint){
-        temperatureSetpoint = newSetpoint;
-    }
-
-    /** */
-    public void setDeadband(double newDeadband){
-        deadband = newDeadband;
-    }
-
-    /** Sets a specified input temperature to a new temperature.
+    /** Sets a specified input to a new temperature.
      * @param newTemp is a double value representing temperature
      * @param index is an integer value which dictates which input is being changed */
-    public void setInputTemperatures(double newTemp, int index){
-        this.inputTemperatures[index] = newTemp;
+    public void setInput(double newTemp, int index){
+        this.inputs[index] = newTemp;
     }
 
-    public String getTemperature(int index) {
-        return String.valueOf(inputTemperatures[index]);
+    public String getInput(int index) {
+        return String.valueOf(inputs[index]);
     }
 }
