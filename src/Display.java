@@ -1,7 +1,7 @@
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 //TODO: testing new version where all inputs will be in the same JTextField array to make initialisation more concise
 
@@ -39,31 +39,20 @@ public class Display {
     }
 
     public void initInputs(int index){
-        inputs[index].getDocument().addDocumentListener(new DocumentListener() {
+        inputs[index].addActionListener(new ActionListener() {
             @Override
-            public void insertUpdate(DocumentEvent e) {
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                if( checkForCharacters() ) {
-                    controller.setInput(Double.parseDouble(inputs[index].getText()), index);
-                    controller.Update();
+            public void actionPerformed(ActionEvent e) {
+                String text = inputs[index].getText();
+                if (checkForCharacters(text)) {
+                    System.out.println(inputs[index].getText());
                 }else{
-                    inputs[index].setText(controller.getInput(index));
+                    inputs[index].setText(String.valueOf(controller.getInput(index)));
                 }
             }
-
-            //returns true if no characters are found and false if a character other than digits and '.' is found
-            public boolean checkForCharacters(){
-                String text = inputs[index].getText();
+            public boolean checkForCharacters(String text){
                 char ctext[] = text.toCharArray();
                 for( int i = 0; i < text.length(); i++ ){
-                    if(Character.isDigit(ctext[i]) != true || ctext[i] != '.'){
+                    if(Character.isDigit(ctext[i]) != true && ctext[i] != '.'){
                         JOptionPane.showMessageDialog(null,
                                 "Error: Please enter a valid numeric value.");
                         return false;
