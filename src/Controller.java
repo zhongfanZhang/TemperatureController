@@ -54,7 +54,7 @@ public class Controller {
         //check if the values are valid for output, i.e. above the deadband threshold
         for( int i = 0; i < outputs.length; i++ ){
             //if temp is greater than the threshold, display
-            if( outputs[i] > (inputs[0] - inputs[1]) ){
+            if( outputs[i] > (inputs[0] - inputs[1]) && outputs[i] < 100 ){
                 display.displayOutputs("Input " + outputIndex[i] + ":", outputs[i], i);
             }else{
                 display.turnOffOutput(i);
@@ -73,7 +73,7 @@ public class Controller {
             double max = inputs[0] - inputs[1];
             int maxIndex = 0;
             for( int j = 0; j < temp.length; j++ ){
-                if(temp[j] > max){
+                if(temp[j] > max && temp[j] < 100){
                     max = temp[j];
                     maxIndex = j;
                 }

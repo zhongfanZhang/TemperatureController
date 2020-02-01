@@ -3,8 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//TODO: testing new version where all inputs will be in the same JTextField array to make initialisation more concise
-
 public class Display {
     private Controller controller;
     private JFrame window;
