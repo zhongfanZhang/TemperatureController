@@ -36,6 +36,7 @@ public class Display {
         //temperature setpoint textfield
         JLabel tempSetpointLabel = new JLabel("Temperature Setpoint:");
         tempSetpointLabel.setBounds(50,40,150,20);
+        tempSetpointLabel.setToolTipText("Input temperatures above this value may be displayed");
         window.add(tempSetpointLabel);
         inputs[0] = new JTextField();
         inputs[0].setBounds(50,60,150,20);
@@ -44,6 +45,7 @@ public class Display {
         //deadband textfield
         JLabel deadbandLabel = new JLabel("Deadband:");
         deadbandLabel.setBounds(250,40,150,20);
+        deadbandLabel.setToolTipText("Inputs lower than (setpoint - deadband) will not be considered for output");
         window.add(deadbandLabel);
         inputs[1] = new JTextField();
         inputs[1].setBounds(250,60,150,20);
