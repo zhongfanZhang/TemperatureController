@@ -2,8 +2,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Display {
+
+    //TODO: scalable window
+    //TODO: other forms of output
+    //TODO: cooling display
+    //TODO: check for possible exploits
+
     private Controller controller;
     private JFrame window;
     /** Index 0 and 1 and temperatureSetpoint and deadband fields respectively
@@ -56,14 +64,23 @@ public class Display {
         outputLabels = new JLabel[3];
         for(int i = 0; i < 3; i++ ){
             outputLabels[i] = new JLabel("Output off");
-            outputLabels[i].setBounds(800,80 + i*40,150,20);
+            outputLabels[i].setBounds(800,380 + i*40,150,20);
             window.add(outputLabels[i]);
             outputs[i] = new JTextField();
-            outputs[i].setBounds(800,100 + i*40,150,20);
+            outputs[i].setBounds(800,400 + i*40,150,20);
             outputs[i].setEditable(false);
             window.add(outputs[i]);
         }
 
+        //setup window closing event
+        window.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+               System.exit(0);
+            }
+        });
+
+        window.setTitle("Temperature Controller");
         window.setVisible(true);
     }
 
@@ -80,9 +97,10 @@ public class Display {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String text = inputs[index].getText();
+                double inputTemp = Double.parseDouble(text);
                 //handle inputs other than numbers
                 try{
-                    controller.setInput(Double.parseDouble(text),index);
+                    controller.setInput(inputTemp,index);
                     controller.Update();
                 }catch(NumberFormatException f){
                     JOptionPane.showMessageDialog(null,

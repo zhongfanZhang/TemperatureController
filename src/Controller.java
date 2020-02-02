@@ -1,15 +1,19 @@
 import java.util.Arrays;
 
 public class Controller {
+    //TODO: check for possible exploits
 
     //-------------------------CLASS VARIABLES---------------------------------------
-    /** indices 0 and 1 are used for the temperature setpoint and deadband values respectively,
+    /** Indices 0 and 1 are used for the temperature setpoint and deadband values respectively,
      * indices 2 to 9 are used for input temperatures */
     private double[] inputs;
-    /** */
+
+    /** Array used to store the 3 highest values from the "inputs" array */
     private double[] outputs;
-    /** */
+
+    /** Array used to store the original indices of the 3 highest values of the "inputs" array */
     private int[] outputIndex;
+
     /** Used for the cooling output, initially set to false by the constructor function.
      * Set cooling = true if the desired output value is ON
      * Set cooling = false if OFF */
@@ -53,7 +57,7 @@ public class Controller {
 
         //check if the values are valid for output, i.e. above the deadband threshold
         for( int i = 0; i < outputs.length; i++ ){
-            //if temp is greater than the threshold, display
+            //if temp is within range, display, else clear display
             if( outputs[i] > (inputs[0] - inputs[1]) && outputs[i] < 100 ){
                 display.displayOutputs("Input " + outputIndex[i] + ":", outputs[i], i);
             }else{
