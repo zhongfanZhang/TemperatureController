@@ -111,6 +111,7 @@ public class Display {
             }catch(NumberFormatException f){
                 JOptionPane.showMessageDialog(null,
                         "Error: Please enter a valid numeric value and make sure that there are no empty fields.");
+                displayTemperatureInputs(index,controller.getInput(index));
             }
         });
     }

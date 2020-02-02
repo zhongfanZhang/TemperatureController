@@ -102,7 +102,7 @@ public class Controller {
         this.inputs[index] = newTemp;
     }
 
-    public String getInput(int index) {
-        return String.valueOf(inputs[index]);
+    public double getInput(int index) {
+        return inputs[index];
     }
 }
