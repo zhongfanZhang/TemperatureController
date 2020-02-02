@@ -103,14 +103,14 @@ public class Display {
     public void initInputs(int index){
         inputs[index].addActionListener(e -> {
             String text = inputs[index].getText();
-            double inputTemp = Double.parseDouble(text);
-            //handle inputs other than numbers
-            try{
+            double inputTemp;
+            try {
+                inputTemp = Double.parseDouble(text);
                 controller.setInput(inputTemp,index);
                 controller.Update();
             }catch(NumberFormatException f){
                 JOptionPane.showMessageDialog(null,
-                        "Error: Please enter a valid numeric value.");
+                        "Error: Please enter a valid numeric value and make sure that there are no empty fields.");
             }
         });
     }

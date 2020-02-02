@@ -64,6 +64,11 @@ public class Controller {
                 display.turnOffOutput(i);
             }
         }
+
+        //refill unchanged values
+        for(int i = 2; i < 10; i++){
+            display.displayTemperatureInputs(i,inputs[i]);
+        }
     }
 
     /** */
