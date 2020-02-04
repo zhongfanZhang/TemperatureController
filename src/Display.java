@@ -20,7 +20,9 @@ public class Display {
     /** Used to access the ImageIcon of the cooling status */
     private JLabel coolingIcon;
 
+    /** Field used to store the onButton graphic */
     private ImageIcon onButton;
+    /** Field used to store the offButton Graphic */
     private ImageIcon offButton;
 
     /** Constructor function for the Display class, sets the window size to width = 450, height = 550 with no layout manager.
