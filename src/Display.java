@@ -4,25 +4,30 @@ import java.awt.event.WindowEvent;
 
 public class Display {
 
-    //TODO: scalable window
-    //TODO: other forms of output
-    //TODO: cooling display
-    //TODO: check for possible exploits
-
+    /** Field used to store the controller that is connected to the display */
     private Controller controller;
+    /** Field used to access the window component of the GUI
+     * Window size is initially set to width = 450 and height = 550 */
     private JFrame window;
     /** Index 0 and 1 and temperatureSetpoint and deadband fields respectively
-     *  indices 2 to 9 are temperature inputs */
+     *  indices 2 to 9 are temperature inputs (function 2 temperature inputs)
+     *  index 10 is used for temperature input 0 (function 1 temperature input) */
     private JTextField[] inputs;
-    /** */
+    /** A size 3 array used to display the output values */
     private JTextField[] outputs;
-    /** */
+    /** A size 3 array to store the labels of the 3 output textfields */
     private JLabel[] outputLabels;
-    /** */
+    /** Used to access the ImageIcon of the cooling status */
     private JLabel coolingIcon;
 
-    /** */
-    public Display(){
+    /** Constructor function for the Display class, sets the window size to width = 450, height = 550 with no layout manager.
+     * Initialises the sizes of all textfields and labels to width = 150 and height = 20.
+     * Uses the setBounds function to set all the locations of the textfields and labels.
+     * Sets the window closing event to terminate the program.
+     * @param cont is copied into this.controller in order to access control logic methods and data */
+    public Display(Controller cont){
+        controller = cont;
+
         //setting up the window
         window = new JFrame();
         window.setSize(450,550);
@@ -88,6 +93,11 @@ public class Display {
         coolingIcon.setBounds(250,360,100,100);
         window.add(coolingIcon);
 
+        //setting initial values in textfields
+        for(int i = 0; i < 11; i++ ){
+            inputs[i].setText(String.valueOf(controller.getInput(i)));
+        }
+
         //setup window closing event
         window.addWindowListener(new WindowAdapter() {
             @Override
@@ -100,24 +110,24 @@ public class Display {
         window.setVisible(true);
     }
 
-    public void init(){
-        //setting initial values in textfields
-        for(int i = 0; i < 11; i++ ){
-            inputs[i].setText(String.valueOf(controller.getInput(i)));
-        }
-    }
-
-    /** */
+    /** This function sets up a specified textfield to listen for an "enter" key press.
+     * If the key press event is detected, the Update() function from the Controller class will be called.
+     * @param index specifies the textfield to setup
+     * this function should be ran 11 times by the main function to set up every single textfield */
     public void initInputs(int index){
         inputs[index].addActionListener(e -> {
             String text = inputs[index].getText();
             double inputTemp;
+            //handle empty and invalid inputs
             try {
                 inputTemp = Double.parseDouble(text);
+                //if user input is below absolute 0, reset the field
                 if( inputTemp < -273 ){
                     JOptionPane.showMessageDialog(null,"Invalid input: value below absolute zero.");
                     displayTemperatureInputs(index,controller.getInput(index));
-                }else {
+                }
+                //if user input is valid, set the temperature input to the input value and run update()
+                else {
                     controller.setInput(inputTemp, index);
                     controller.Update();
                 }
@@ -129,41 +139,37 @@ public class Display {
         });
     }
 
-    /** */
+    /** This function is used to set the controller variable to a specified controller object in order to access
+     * the control logic functions and data */
     public void connect(Controller cont){
         controller = cont;
     }
 
-    /** */
+    /** This function is used by a controller object to set a specified input to a value
+     * @param index is used to specify the index of the inputs[] array that needs to be changed
+     * @param value is the new value that should be displayed */
     public void displayTemperatureInputs(int index, double value){
         inputs[index].setText(String.valueOf(value));
     }
 
-    /** */
+    /** This function is called by the Update() function of a Controller object to set the label
+     * and value of a output textfield to a desired value
+     * @param label is a string which contains the desired text to be displayed at outputLabels[index]
+     * @param index is an integer value that dictates which outputs and outputLabels element will be changed
+     * @param value is a double value which contains the new value to be displayed */
     public void displayOutputs(String label, double value, int index){
         outputLabels[index].setText(label);
         outputs[index].setText(String.valueOf(value));
     }
 
-    public void turnOffOutput(int index){
-        outputLabels[index].setText("Output off");
-        outputs[index].setText(null);
-    }
-
-    /** */
+    /** This function sets the icon of the cooling display to on or off based on the input
+     * @param input is a boolean value, if input = true, cooling is set to ON
+     *                                  else cooling is set to OFF */
     public void setCoolingIcon(boolean input){
         if(input == true){
-            try {
-                coolingIcon.setIcon(new ImageIcon("src/resources/OnButton.png"));
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null,"src/resources/OnButton.png not found.");
-            }
+            coolingIcon.setIcon(new ImageIcon("src/resources/OnButton.png"));
         }else{
-            try{
-                coolingIcon.setIcon(new ImageIcon("src/resources/OffButton.png"));
-            }catch(Exception e){
-                JOptionPane.showMessageDialog(null,"src/resources/OffButton.png not found.");
-            }
+            coolingIcon.setIcon(new ImageIcon("src/resources/OffButton.png"));
         }
     }
 }

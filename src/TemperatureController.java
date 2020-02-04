@@ -4,10 +4,8 @@ class TemperatureController {
 
         //setting up the controller and display
         Controller cont = new Controller();
-        Display disp = new Display();
-        disp.connect(cont);
+        Display disp = new Display(cont);
         cont.connect(disp);
-        disp.init();
 
         //setup textfields
         for( int i = 0; i < 11; i++ ){
