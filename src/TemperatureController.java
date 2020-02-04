@@ -10,7 +10,7 @@ class TemperatureController {
         disp.init();
 
         //setup textfields
-        for( int i = 0; i < 10; i++ ){
+        for( int i = 0; i < 11; i++ ){
             disp.initInputs(i);
         }
     }

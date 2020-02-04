@@ -1,25 +1,21 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Controller {
-    //TODO: check for possible exploits
-
     //-------------------------CLASS VARIABLES---------------------------------------
     /** Indices 0 and 1 are used for the temperature setpoint and deadband values respectively,
      * indices 2 to 9 are used for input temperatures */
     private double[] inputs;
 
     /** Array used to store the 3 highest values from the "inputs" array */
-    private double[] outputs;
+    private ArrayList<Double> outputs;
 
     /** Array used to store the original indices of the 3 highest values of the "inputs" array */
-    private int[] outputIndex;
-
-    /** Used for the cooling output, initially set to false by the constructor function.
-     * Set cooling = true if the desired output value is ON
-     * Set cooling = false if OFF */
-    private boolean cooling;
+    private ArrayList<Integer> outputIndex;
 
     private Display display;
+
+    private boolean cooling;
 
     //--------------------------CONTROL FUNCTIONS------------------------------------
     /**
@@ -30,20 +26,17 @@ public class Controller {
      * cooling is initially set to false (OFF)
      */
     public Controller() {
-        //setting up variables
-//        temperatureSetpoint = 22.0;
-//        deadband = 2.0;
-        cooling = false;
-
         //setup initial inputs and outputs values
-        inputs = new double[10];
+        inputs = new double[11];
         inputs[0] = 22.0;
         inputs[1] = 2.0;
         Arrays.fill(inputs,2,9,0);
-        outputs = new double[3];
-        Arrays.fill(outputs,0);
-        outputIndex = new int[3];
-        Arrays.fill(outputIndex,0);
+        inputs[10] = 0.0;
+        cooling = false;
+
+        //setup output arraylists
+        outputs = new ArrayList<>();
+        outputIndex = new ArrayList<>();
     }
 
     public void connect(Display disp){
@@ -55,42 +48,50 @@ public class Controller {
         //fill the output array with the three highest values
         fillOutputArray();
 
-        //check if the values are valid for output, i.e. above the deadband threshold
-        for( int i = 0; i < outputs.length; i++ ){
-            //if temp is within range, display, else clear display
-            if( outputs[i] > (inputs[0] - inputs[1]) && outputs[i] < 100 ){
-                display.displayOutputs("Input " + outputIndex[i] + ":", outputs[i], i);
-            }else{
-                display.turnOffOutput(i);
-            }
+        //display function 2 outputs
+        for( int i = 0; i < outputs.size(); i++ ){
+            display.displayOutputs("Input " + ((outputIndex.get(i))+1) + ":", outputs.get(i), i);
         }
+        //empty the output arraylist
+        outputs.clear();
+        outputIndex.clear();
 
         //refill unchanged values
         for(int i = 2; i < 10; i++){
             display.displayTemperatureInputs(i,inputs[i]);
         }
+
+        //function 1: cooling display
+        if( inputs[10] > inputs[0] ){
+            cooling = true;
+        }else if( inputs[10] < (inputs[0] - inputs[1])){
+            cooling = false;
+        }
+        display.setCoolingIcon(cooling);
     }
 
+    //TODO: change to arraylist so I can use variable length for the update function
     /** */
     private void fillOutputArray(){
-        double[] temp = new double[8];
-        for( int i = 0; i < 8; i++ ){
-            temp[i] = inputs[i+2];
+        //setting up a temp arraylist to contain the current inputs
+        ArrayList<Double> temp = new ArrayList<>();
+        for( int i = 2; i < 10; i++ ){
+            temp.add(inputs[i]);
         }
-        for(int i = 0; i < 3; i++ ){
-            //only output if above deadband threshold
-            double max = inputs[0] - inputs[1];
-            int maxIndex = 0;
-            for( int j = 0; j < temp.length; j++ ){
-                if(temp[j] > max && temp[j] < 100){
-                    max = temp[j];
-                    maxIndex = j;
+
+        //find the top 3 max values and remove them from the temp arraylist
+        for( int i = 0; i < 3; i++ ){
+            double max = -1000000;
+            int max_index = 0;
+            for( int j = 0; j < temp.size(); j++ ){
+                if( temp.get(j) >= max && temp.get(j) < 100 ){
+                    max = temp.get(j);
+                    max_index = j;
                 }
             }
-            //set the previous max to an improbable value so it wont selected for max again
-            temp[maxIndex] = -100000;
-            outputs[i] = max;
-            outputIndex[i] = maxIndex;
+            temp.remove(max_index);
+            outputs.add(max);
+            outputIndex.add(max_index);
         }
     }
 

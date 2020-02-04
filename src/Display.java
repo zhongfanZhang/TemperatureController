@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -25,22 +24,29 @@ public class Display {
     /** */
     public Display(){
         //setting up the window
-        GridLayout windowLayout = new GridLayout(2,4);
         window = new JFrame();
         window.setSize(450,550);
         window.setLayout(null);
 
         //initialising the input textfields
-        inputs = new JTextField[10];
+        inputs = new JTextField[11];
 
         //temperature setpoint textfield
         JLabel tempSetpointLabel = new JLabel("Temperature Setpoint:");
         tempSetpointLabel.setBounds(50,40,150,20);
-        tempSetpointLabel.setToolTipText("Input temperatures above this value may be displayed");
+        tempSetpointLabel.setToolTipText("If temperature input 0 is above this value cooling will be set to on");
         window.add(tempSetpointLabel);
         inputs[0] = new JTextField();
         inputs[0].setBounds(50,60,150,20);
         window.add(inputs[0]);
+
+        //function 1 temperature input textfield
+        JLabel coolingTempLabel = new JLabel("Temperature input 0:");
+        coolingTempLabel.setBounds(50,80, 150,20);
+        window.add(coolingTempLabel);
+        inputs[10] = new JTextField();
+        inputs[10].setBounds(50,100,150,20);
+        window.add(inputs[10]);
 
         //deadband textfield
         JLabel deadbandLabel = new JLabel("Deadband:");
@@ -96,7 +102,7 @@ public class Display {
 
     public void init(){
         //setting initial values in textfields
-        for(int i = 0; i < 10; i++ ){
+        for(int i = 0; i < 11; i++ ){
             inputs[i].setText(String.valueOf(controller.getInput(i)));
         }
     }
@@ -108,8 +114,13 @@ public class Display {
             double inputTemp;
             try {
                 inputTemp = Double.parseDouble(text);
-                controller.setInput(inputTemp,index);
-                controller.Update();
+                if( inputTemp < -273 ){
+                    JOptionPane.showMessageDialog(null,"Invalid input: value below absolute zero.");
+                    displayTemperatureInputs(index,controller.getInput(index));
+                }else {
+                    controller.setInput(inputTemp, index);
+                    controller.Update();
+                }
             }catch(NumberFormatException f){
                 JOptionPane.showMessageDialog(null,
                         "Error: Please enter a valid numeric value and make sure that there are no empty fields.");
