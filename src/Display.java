@@ -24,7 +24,7 @@ public class Display {
      * Initialises the sizes of all textfields and labels to width = 150 and height = 20.
      * Uses the setBounds function to set all the locations of the textfields and labels.
      * Sets the window closing event to terminate the program.
-     * @param cont is copied into this.controller in order to access control logic methods and data */
+     * @param cont is copied into this.controller in order to access control logic methods and data. */
     public Display(Controller cont){
         controller = cont;
 
@@ -112,8 +112,8 @@ public class Display {
 
     /** This function sets up a specified textfield to listen for an "enter" key press.
      * If the key press event is detected, the Update() function from the Controller class will be called.
-     * @param index specifies the textfield to setup
-     * this function should be ran 11 times by the main function to set up every single textfield */
+     * @param index specifies the textfield to setup.
+     * this function should be ran 11 times by the main function to set up every single textfield. */
     public void initInputs(int index){
         inputs[index].addActionListener(e -> {
             String text = inputs[index].getText();
@@ -145,15 +145,15 @@ public class Display {
         controller = cont;
     }
 
-    /** This function is used by a controller object to set a specified input to a value
-     * @param index is used to specify the index of the inputs[] array that needs to be changed
-     * @param value is the new value that should be displayed */
+    /** This function is used by a controller object to set a specified input to a value.
+     * @param index is used to specify the index of the inputs[] array that needs to be changed.
+     * @param value is the new value that should be displayed. */
     public void displayTemperatureInputs(int index, double value){
         inputs[index].setText(String.valueOf(value));
     }
 
     /** This function is called by the Update() function of a Controller object to set the label
-     * and value of a output textfield to a desired value
+     * and value of a output textfield to a desired value.
      * @param label is a string which contains the desired text to be displayed at outputLabels[index]
      * @param index is an integer value that dictates which outputs and outputLabels element will be changed
      * @param value is a double value which contains the new value to be displayed */
@@ -162,7 +162,7 @@ public class Display {
         outputs[index].setText(String.valueOf(value));
     }
 
-    /** This function sets the icon of the cooling display to on or off based on the input
+    /** This function sets the icon of the cooling display to on or off based on the input.
      * @param input is a boolean value, if input = true, cooling is set to ON
      *                                  else cooling is set to OFF */
     public void setCoolingIcon(boolean input){

@@ -26,10 +26,10 @@ public class Controller {
     //--------------------------CONTROL FUNCTIONS------------------------------------
     /**
      * Constructor function for the Controller class.
-     * Sets the default temperature setpoint to 22 degrees and temperature setpoint
+     * Sets the default temperature setpoint to 22 degrees and temperature setpoint.
      * deadband to 2 degrees.
      * Initialises all input temperatures to 0 degrees.
-     * cooling is initially set to false (OFF)
+     * cooling is initially set to false (OFF).
      */
     public Controller() {
         //setup initial inputs and outputs values
@@ -52,9 +52,9 @@ public class Controller {
     }
 
     /** This function is called after every valid input event that the GUI detects.
-     * Sets the function 2 outputs to the 3 highest values by calling the fillOutputArray() method
-     * Refills all unchanged textfields if some are cleared
-     * Checks the temperature input 0 value to determine the cooling status */
+     * Sets the function 2 outputs to the 3 highest values by calling the fillOutputArray() method.
+     * Refills all unchanged textfields if some are cleared.
+     * Checks the temperature input 0 value to determine the cooling status. */
     public void Update(){
         //fill the output array with the three highest values
         fillOutputArray();
@@ -107,14 +107,14 @@ public class Controller {
 
     //-------------------------------GET/SET FUNCTIONS---------------------------------
     /** Sets a specified input to a new temperature.
-     * @param newTemp is a double value representing temperature
-     * @param index is an integer value which dictates which input is being changed */
+     * @param newTemp is a double value representing temperature.
+     * @param index is an integer value which dictates which input is being changed. */
     public void setInput(double newTemp, int index){
         this.inputs[index] = newTemp;
     }
 
-    /** @return a specified value from the inputs array
-     * @param index is used to specify the desired index */
+    /** @return a specified value from the inputs array.
+     * @param index is used to specify the desired index. */
     public double getInput(int index) {
         return inputs[index];
     }
