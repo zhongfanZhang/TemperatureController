@@ -20,6 +20,9 @@ public class Display {
     /** Used to access the ImageIcon of the cooling status */
     private JLabel coolingIcon;
 
+    private ImageIcon onButton;
+    private ImageIcon offButton;
+
     /** Constructor function for the Display class, sets the window size to width = 450, height = 550 with no layout manager.
      * Initialises the sizes of all textfields and labels to width = 150 and height = 20.
      * Uses the setBounds function to set all the locations of the textfields and labels.
@@ -86,10 +89,12 @@ public class Display {
         }
 
         //cooling output intially set to off
+        offButton = new ImageIcon(getClass().getResource("/resources/OffButton.png"));
+        onButton = new ImageIcon(getClass().getResource("/resources/OnButton.png"));
         JLabel coolingLabel = new JLabel("Cooling status:");
         coolingLabel.setBounds(250,340,100,20);
         window.add(coolingLabel);
-        coolingIcon = new JLabel(new ImageIcon("src/resources/OffButton.png"));
+        coolingIcon = new JLabel(offButton);
         coolingIcon.setBounds(250,360,100,100);
         window.add(coolingIcon);
 
@@ -167,9 +172,9 @@ public class Display {
      *                                  else cooling is set to OFF */
     public void setCoolingIcon(boolean input){
         if(input == true){
-            coolingIcon.setIcon(new ImageIcon("src/resources/OnButton.png"));
+            coolingIcon.setIcon(onButton);
         }else{
-            coolingIcon.setIcon(new ImageIcon("src/resources/OffButton.png"));
+            coolingIcon.setIcon(offButton);
         }
     }
 }
