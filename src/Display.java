@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -18,13 +19,11 @@ public class Display {
     private JTextField[] outputs;
     /** A size 3 array to store the labels of the 3 output textfields */
     private JLabel[] outputLabels;
-    /** Used to access the ImageIcon of the cooling status */
+    /** Textfield that displays the cooling status */
     private JTextField coolingIcon;
 
-    /** Field used to store the onButton graphic */
-    private ImageIcon onButton;
-    /** Field used to store the offButton Graphic */
-    private ImageIcon offButton;
+    private JPanel function1;
+    private JPanel function2;
 
     /** Constructor function for the Display class, sets the window size to width = 450, height = 550 with no layout manager.
      * Initialises the sizes of all textfields and labels to width = 150 and height = 20.
@@ -36,46 +35,50 @@ public class Display {
 
         //setting up the window
         window = new JFrame();
-        window.setSize(450,550);
+        window.setSize(460,600);
         window.setLayout(null);
+        function1 = new JPanel();
+        function2 = new JPanel();
+        function1.setLayout(null);
+        function2.setLayout(null);
 
         //initialising the input textfields
         inputs = new JTextField[11];
 
         //temperature setpoint textfield
         JLabel tempSetpointLabel = new JLabel("Temperature Setpoint:");
-        tempSetpointLabel.setBounds(50,40,150,20);
+        tempSetpointLabel.setBounds(50,20,150,20);
         tempSetpointLabel.setToolTipText("If temperature input 0 is above this value cooling will be set to on");
-        window.add(tempSetpointLabel);
+        function1.add(tempSetpointLabel);
         inputs[0] = new JTextField();
-        inputs[0].setBounds(50,60,150,20);
-        window.add(inputs[0]);
+        inputs[0].setBounds(50,40,150,20);
+        function1.add(inputs[0]);
 
         //function 1 temperature input textfield
         JLabel coolingTempLabel = new JLabel("Temperature input 0:");
-        coolingTempLabel.setBounds(50,80, 150,20);
-        window.add(coolingTempLabel);
+        coolingTempLabel.setBounds(50,60, 150,20);
+        function1.add(coolingTempLabel);
         inputs[10] = new JTextField();
-        inputs[10].setBounds(50,100,150,20);
-        window.add(inputs[10]);
+        inputs[10].setBounds(50,80,150,20);
+        function1.add(inputs[10]);
 
         //deadband textfield
         JLabel deadbandLabel = new JLabel("Deadband:");
-        deadbandLabel.setBounds(250,40,150,20);
+        deadbandLabel.setBounds(220,20,150,20);
         deadbandLabel.setToolTipText("Inputs lower than (setpoint - deadband) will not be considered for output");
-        window.add(deadbandLabel);
+        function1.add(deadbandLabel);
         inputs[1] = new JTextField();
-        inputs[1].setBounds(250,60,150,20);
-        window.add(inputs[1]);
+        inputs[1].setBounds(220,40,150,20);
+        function1.add(inputs[1]);
 
         //temperature inputs textfields
         for(int i = 2; i < 10; i++ ){
             JLabel tempInputLabel = new JLabel("Temperature input " + (i-1) + ":");
-            tempInputLabel.setBounds(50,60 + i*40,150,20);
-            window.add(tempInputLabel);
+            tempInputLabel.setBounds(50,20 + (i-2)*40,150,20);
+            function2.add(tempInputLabel);
             inputs[i] = new JTextField();
-            inputs[i].setBounds(50,80 + i*40,150,20);
-            window.add(inputs[i]);
+            inputs[i].setBounds(50,40 + (i-2)*40,150,20);
+            function2.add(inputs[i]);
         }
 
         //initialising the output temperature textfields
@@ -83,23 +86,23 @@ public class Display {
         outputLabels = new JLabel[3];
         for(int i = 0; i < 3; i++ ){
             outputLabels[i] = new JLabel("Output off");
-            outputLabels[i].setBounds(250,140 + i*40,150,20);
-            window.add(outputLabels[i]);
+            outputLabels[i].setBounds(220,20 + i*40,150,20);
+            function2.add(outputLabels[i]);
             outputs[i] = new JTextField();
-            outputs[i].setBounds(250,160 + i*40,150,20);
+            outputs[i].setBounds(220,40 + i*40,150,20);
             outputs[i].setEditable(false);
-            window.add(outputs[i]);
+            function2.add(outputs[i]);
         }
 
         //cooling output intially set to off
         JLabel coolingLabel = new JLabel("Cooling status:");
-        coolingLabel.setBounds(250,80,100,20);
-        window.add(coolingLabel);
+        coolingLabel.setBounds(220,60,100,20);
+        function1.add(coolingLabel);
         coolingIcon = new JTextField("OFF");
         coolingIcon.setBackground(Color.red);
-        coolingIcon.setBounds(250,100,100,20);
+        coolingIcon.setBounds(220,80,100,20);
         coolingIcon.setEditable(false);
-        window.add(coolingIcon);
+        function1.add(coolingIcon);
 
         //setting initial values in textfields
         for(int i = 0; i < 11; i++ ){
@@ -114,6 +117,24 @@ public class Display {
             }
         });
 
+        //finish setting up panels and add a border for each panel
+        function1.setBounds(30,40,400,120);
+        function2.setBounds(30,190,400,360);
+        function1.setVisible(true);
+        function2.setVisible(true);
+        Border functionBorder = BorderFactory.createLineBorder(Color.gray);
+        function1.setBorder(functionBorder);
+        function2.setBorder(functionBorder);
+
+        //add labels for each panel and add panel and labels to the main window
+        JLabel function1Label = new JLabel("Function 1:");
+        function1Label.setBounds(30,20,150,20);
+        JLabel function2Label = new JLabel("Function 2:");
+        function2Label.setBounds(30,170,150,20);
+        window.add(function1Label);
+        window.add(function2Label);
+        window.add(function1);
+        window.add(function2);
         window.setTitle("Temperature Controller");
         window.setVisible(true);
     }
@@ -162,12 +183,12 @@ public class Display {
 
     /** This function is called by the Update() function of a Controller object to set the label
      * and value of a output textfield to a desired value.
-     * @param label is a string which contains the desired text to be displayed at outputLabels[index]
      * @param index is an integer value that dictates which outputs and outputLabels element will be changed
      * @param value is a double value which contains the new value to be displayed */
-    public void displayOutputs(String label, double value, int index){
-        outputLabels[index].setText(label);
-        outputs[index].setText(String.valueOf(value));
+    public void displayOutputs(double value, int index, int dispIndex){
+        String label = "Input " + index + ":";
+        outputLabels[dispIndex].setText(label);
+        outputs[dispIndex].setText(String.valueOf(value));
     }
 
     /** This function sets the icon of the cooling display to on or off based on the input.

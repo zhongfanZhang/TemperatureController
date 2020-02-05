@@ -61,7 +61,7 @@ public class Controller {
 
         //display function 2 outputs
         for( int i = 0; i < outputs.size(); i++ ){
-            display.displayOutputs("Input " + ((outputIndex.get(i))+1) + ":", outputs.get(i), i);
+            display.displayOutputs(outputs.get(i), outputIndex.get(i)+1,i);
         }
         //empty the output arraylist
         outputs.clear();
