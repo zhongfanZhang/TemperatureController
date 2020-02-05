@@ -9,7 +9,7 @@ public class Display {
     /** Field used to store the controller that is connected to the display */
     private Controller controller;
     /** Field used to access the window component of the GUI
-     * Window size is initially set to width = 450 and height = 550 */
+     * Window size is initially set to width = 460 and height = 600 */
     private JFrame window;
     /** Index 0 and 1 and temperatureSetpoint and deadband fields respectively
      *  indices 2 to 9 are temperature inputs (function 2 temperature inputs)
@@ -25,7 +25,7 @@ public class Display {
     private JPanel function1;
     private JPanel function2;
 
-    /** Constructor function for the Display class, sets the window size to width = 450, height = 550 with no layout manager.
+    /** Constructor function for the Display class, sets the window size to width = 460, height = 600 with no layout manager.
      * Initialises the sizes of all textfields and labels to width = 150 and height = 20.
      * Uses the setBounds function to set all the locations of the textfields and labels.
      * Sets the window closing event to terminate the program.
