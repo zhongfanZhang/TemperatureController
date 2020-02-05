@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -18,7 +19,7 @@ public class Display {
     /** A size 3 array to store the labels of the 3 output textfields */
     private JLabel[] outputLabels;
     /** Used to access the ImageIcon of the cooling status */
-    private JLabel coolingIcon;
+    private JTextField coolingIcon;
 
     /** Field used to store the onButton graphic */
     private ImageIcon onButton;
@@ -91,13 +92,13 @@ public class Display {
         }
 
         //cooling output intially set to off
-        offButton = new ImageIcon(getClass().getResource("/resources/OffButton.png"));
-        onButton = new ImageIcon(getClass().getResource("/resources/OnButton.png"));
         JLabel coolingLabel = new JLabel("Cooling status:");
-        coolingLabel.setBounds(250,340,100,20);
+        coolingLabel.setBounds(250,80,100,20);
         window.add(coolingLabel);
-        coolingIcon = new JLabel(offButton);
-        coolingIcon.setBounds(250,360,100,100);
+        coolingIcon = new JTextField("OFF");
+        coolingIcon.setBackground(Color.red);
+        coolingIcon.setBounds(250,100,100,20);
+        coolingIcon.setEditable(false);
         window.add(coolingIcon);
 
         //setting initial values in textfields
@@ -174,9 +175,11 @@ public class Display {
      *                                  else cooling is set to OFF */
     public void setCoolingIcon(boolean input){
         if(input == true){
-            coolingIcon.setIcon(onButton);
+            coolingIcon.setBackground(Color.green);
+            coolingIcon.setText("ON");
         }else{
-            coolingIcon.setIcon(offButton);
+            coolingIcon.setBackground(Color.red);
+            coolingIcon.setText("OFF");
         }
     }
 }
