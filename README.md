@@ -3,7 +3,7 @@ The source code of the program can be found in /src. /javadocs contains html fil
 ## Getting Started
 The TemperatureController.jar file in the root directory of the repository can be run directly after download.
 ### Prerequisites
-- 50KB of harddrive space
+- 10KB of harddrive space
 - java version 13.0.2
 ## Built with
 javadocs generated with Intellij Idea
