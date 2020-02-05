@@ -48,14 +48,14 @@ public class Display {
         //temperature setpoint textfield
         JLabel tempSetpointLabel = new JLabel("Temperature Setpoint:");
         tempSetpointLabel.setBounds(50,20,150,20);
-        tempSetpointLabel.setToolTipText("If temperature input 0 is above this value cooling will be set to on");
+        tempSetpointLabel.setToolTipText("If temperature input is above this value cooling will be set to on");
         function1.add(tempSetpointLabel);
         inputs[0] = new JTextField();
         inputs[0].setBounds(50,40,150,20);
         function1.add(inputs[0]);
 
         //function 1 temperature input textfield
-        JLabel coolingTempLabel = new JLabel("Temperature input 0:");
+        JLabel coolingTempLabel = new JLabel("Temperature input:");
         coolingTempLabel.setBounds(50,60, 150,20);
         function1.add(coolingTempLabel);
         inputs[10] = new JTextField();

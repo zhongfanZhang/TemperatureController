@@ -99,7 +99,7 @@ public class Controller {
                     max_index = j;
                 }
             }
-            temp.remove(max_index);
+            temp.set(max_index,-10000000.0);
             outputs.add(max);
             outputIndex.add(max_index);
         }
